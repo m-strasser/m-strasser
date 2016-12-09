@@ -1,14 +1,11 @@
 extends layout.pug
 
 block content
-
   section#introduction
     h1 Welcome!
     p Here are my articles:
 
   section#articles
-    article
-
     - var md = require('marked');
     if config.articles.markdown
       each article in articles()
