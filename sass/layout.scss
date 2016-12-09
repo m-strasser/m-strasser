@@ -1,0 +1,23 @@
+@import 'colors';
+
+nav {
+  background-color: map-get($colors, main);
+  color: map-get($colors, second);
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: map-get($colors, second);
+  }
+
+  a:hover {
+    color: map-get($colors, main);
+    background-color: map-get($colors, second);
+  }
+}
+
+footer {
+  background-color: map-get($colors, main);
+  color: map-get($colors, second);
+  text-align: center;
+}

@@ -1,0 +1,15 @@
+nav {
+  background-color: black;
+  color: GreenYellow;
+  text-align: center; }
+  nav a {
+    text-decoration: none;
+    color: GreenYellow; }
+  nav a:hover {
+    color: black;
+    background-color: GreenYellow; }
+
+footer {
+  background-color: black;
+  color: GreenYellow;
+  text-align: center; }
