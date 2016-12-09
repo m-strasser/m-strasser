@@ -1,0 +1,9 @@
+{
+  "articles":[
+  {
+    "name": "Test",
+    "subtitle": "This is a subtitle.",
+    "preview": "A short preview of a really long article."
+  }
+  ]
+}
