@@ -12,6 +12,9 @@ module.exports = function(grunt) {
                         }
                 },
                 pug: {
+                        options: {
+                                pretty: true
+                        },
                         compile: {
                                 files: [{
                                         cwd: 'pug/',
