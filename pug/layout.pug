@@ -1,7 +1,22 @@
-doctype html(lang="en")
-html
+doctype html
+html(lang="en")
   head
     block title
       title m-strasser.net
+    link(rel="stylesheet", href="css/layout.css")
   body
+    header
+      nav
+        a(href="index.html") Home 
+        span |
+        a(href="projects.html")  Projects 
+        span |
+        a(href="security.html")  Security Guides 
+        span |
+        a(href="about.html")  About
+
     block content
+
+    footer
+      p.
+        The source code for this site can be found on #[a(href="https://github.com/m-strasser/m-strasser") github], all files are signed and can be verified with my #[a(href="about.html#PublicKey") public key]. More information can be found on the #[a(href="about.html") about page].

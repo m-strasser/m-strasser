@@ -12,9 +12,12 @@ module.exports = function(grunt) {
                         }
                 },
                 pug: {
-                        options: {
-                                pretty: true
-                        },
+                      options: {
+                        pretty: true,
+                        data: function(articles) {
+                          return require('./pug/articles/articles.json');
+                        }
+                      },
                         compile: {
                                 files: [{
                                         cwd: 'pug/',
