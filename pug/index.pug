@@ -18,8 +18,11 @@ block content
       p You should absolutely read this because it is amazing!
 
     //- var articles = [{ name: "Test", subtitle: "Test subtitle", preview: "A small preview." }]
-    each article in articles
-        article
-          h3 #{article.name}
-          small #{article.subtitle}
-          p #{article.preview}
+    // each article in articles
+    //     article
+    //       h3 #{article.name}
+    //       small #{article.subtitle}
+    //       p #{article.preview}
+    // - var md = require('jstransformer')(require('jstransformer-markdown-it'));
+    - var md = require('marked');
+    != md(articles())
