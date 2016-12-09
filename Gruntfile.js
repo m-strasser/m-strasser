@@ -1,5 +1,21 @@
 module.exports = function(grunt) {
   var config = grunt.file.readJSON('config.json');
+  const fs = require('fs');
+
+  var getMarkdownFiles = function(path) {
+    var files = fs.readdirSync(path);
+    var articles = [];
+
+    files.forEach(
+      function(f) {
+        if(f.substring(f.indexOf('.')) == '.md')
+          articles.push(fs.readFileSync(path + '/' + f));
+      }
+    );
+
+    return articles;
+  };
+
   grunt.initConfig({
       watch: {
         pug: {
@@ -9,6 +25,10 @@ module.exports = function(grunt) {
         sass: {
           files: ['sass/*.scss'],
           tasks: ['sass']
+        },
+        markdown: {
+          files: ['articles/*.md'],
+          tasks: ['pug']
         }
       },
       pug: {
@@ -17,12 +37,13 @@ module.exports = function(grunt) {
         data: {
           articles: function(articles) {
             if(config.articles.json) {
-              return require('./pug/articles/articles.json');
+              return require('./articles/articles.json');
             }else if(config.articles.markdown) {
-              return grunt.file.read('./pug/articles/article.md');
+              return getMarkdownFiles('./articles/');
             }
           },
-          require: require
+          require: require,
+          config: config
         }
         },
         compile: {

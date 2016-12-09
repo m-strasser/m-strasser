@@ -8,21 +8,15 @@ block content
 
   section#articles
     article
-      h3 Article #1
-      small A really interesting article
-      p You should absolutely read this because it is amazing!
 
-    article
-      h3 Article #2
-      small Another really interesting article
-      p You should absolutely read this because it is amazing!
-
-    //- var articles = [{ name: "Test", subtitle: "Test subtitle", preview: "A small preview." }]
-    // each article in articles
-    //     article
-    //       h3 #{article.name}
-    //       small #{article.subtitle}
-    //       p #{article.preview}
-    // - var md = require('jstransformer')(require('jstransformer-markdown-it'));
     - var md = require('marked');
-    != md(articles())
+    if config.articles.markdown
+      each article in articles()
+        article
+          p!= md(article.toString())
+    else if config.articles.json
+      // each article in articles
+      //   article
+      //     h3 #{article.name}
+      //     small #{article.subtitle}
+      //     p #{article.preview}
