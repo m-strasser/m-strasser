@@ -1,0 +1,6 @@
+extends layout.pug
+
+block content
+  - var md = require('marked');
+  if config.articles.markdown
+    article!= md(article.toString())

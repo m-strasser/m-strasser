@@ -8,6 +8,7 @@ block content
   section#articles
     - var md = require('marked');
     if config.articles.markdown
+      a(href='articles/') Show single articles
       each article in articles()
         article
           p!= md(article.toString())

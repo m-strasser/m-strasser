@@ -1,15 +1,29 @@
 module.exports = function(grunt) {
   var config = grunt.file.readJSON('config.json');
   const fs = require('fs');
+  const path = require('path');
 
   var getMarkdownFiles = function(path) {
     var files = fs.readdirSync(path);
-    var articles = [];
+    var md_files = [];
 
     files.forEach(
       function(f) {
         if(f.substring(f.indexOf('.')) == '.md')
-          articles.push(fs.readFileSync(path + '/' + f));
+          md_files.push(f);
+      }
+    );
+
+    return md_files;
+  };
+
+  var getMarkdownContent = function(path) {
+    var md_files = getMarkdownFiles(path);
+    var articles = [];
+
+    md_files.forEach(
+      function(f) {
+        articles.push(fs.readFileSync(path + '/' + f));
       }
     );
 
@@ -20,7 +34,7 @@ module.exports = function(grunt) {
       watch: {
         pug: {
           files: ['pug/*.pug'],
-          tasks: ['pug']
+          tasks: ['pug:compile']
         },
         sass: {
           files: ['sass/*.scss'],
@@ -28,32 +42,45 @@ module.exports = function(grunt) {
         },
         markdown: {
           files: ['articles/*.md'],
-          tasks: ['pug']
+          tasks: ['pug:compile', 'markdown']
         }
       },
       pug: {
-        options: {
-          pretty: true,
-        data: {
-          articles: function(articles) {
-            if(config.articles.json) {
-              return require('./articles/articles.json');
-            }else if(config.articles.markdown) {
-              return getMarkdownFiles('./articles/');
+        compile: {
+          options: {
+            pretty: true,
+            data: {
+              articles: function(articles) {
+                if(config.articles.json) {
+                  return require('./articles/articles.json');
+                }else if(config.articles.markdown) {
+                  return getMarkdownContent('./articles/');
+                }
+              },
+              require: require,
+              config: config
             }
           },
-          require: require,
-          config: config
-        }
-        },
-        compile: {
           files: [{
             cwd: 'pug/',
-            src: '**/*.pug',
+            src: ['*.pug', '!single.pug'],
             dest: 'public/',
             expand: true,
             ext: '.html'
-          }]
+          }],
+        },
+        singles: {
+          options: {
+            pretty: true,
+            data: {
+              article: '<%= singleContent %>',
+              require: require,
+              config: config
+            }
+          },
+          files: {
+            '<%= singleFP %>' : 'pug/single.pug'
+          }
         }
       },
       sass: {
@@ -81,6 +108,12 @@ module.exports = function(grunt) {
                   'mv public/css/*.css.asc signatures/css/',
           ].join('&&')
         },
+      },
+      markdown: {
+        compile:{
+          src: 'articles/',
+          dest: 'public/articles/'
+        }
       }
     });
 
@@ -88,5 +121,39 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-pug');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-then');
     grunt.registerTask('build', ['pug', 'sass', 'shell']);
+    grunt.registerMultiTask('markdown', 'Create single article pages from markdown', function(){
+      if(config.articles.markdown) {
+        var files = getMarkdownFiles('./articles/');
+        var index = 0;
+        var dest = this.data.dest;
+        var src = this.data.src;
+
+        var buildSingle = function(index) {
+          grunt.log.writeln('Building article #' + index);
+          var f = files[index];
+
+          if(index < files.length) {
+            grunt.config('singleFP',
+              dest + f.substring(0, f.indexOf('.')) + '.html');
+            grunt.config('singleContent',
+              fs.readFileSync(src + f));
+            grunt.log.writeln(grunt.config('singleFP'));
+            grunt.task.run('pug:singles')
+              .then("Building next single task", function() {
+                buildSingle(index+1);
+              }
+            );
+          }
+        }
+
+        if(files.length > 0) {
+          grunt.log.writeln('Starting to build single articles...');
+          buildSingle(0);
+        }else{
+          grunt.log.writeln('No articles found...');
+        }
+      }
+    });
 };
