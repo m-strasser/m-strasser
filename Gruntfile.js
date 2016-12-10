@@ -116,7 +116,7 @@ module.exports = function(grunt) {
       markdown: {
         compile:{
           src: 'articles/',
-          dest: single_articles_dest
+          dest: 'public/' + single_articles_dest
         }
       }
     });
