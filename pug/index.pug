@@ -6,7 +6,7 @@ block content
     p Here are my articles:
 
   section#articles
-    - var md = require('marked');
+    - var md = require('supermarked');
     if config.articles.markdown
       a(href='articles/') Show single articles
       each article in articles()

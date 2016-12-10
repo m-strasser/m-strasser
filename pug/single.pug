@@ -1,6 +1,6 @@
 extends layout.pug
 
 block content
-  - var md = require('marked');
+  - var md = require('supermarked');
   if config.articles.markdown
     article!= md(article.toString())
