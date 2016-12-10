@@ -11,7 +11,8 @@ block content
       a(href='articles/') Show single articles
       each article in articles()
         article
-          p!= md(article.toString())
+          p!= md(article.content.toString())
+          a(href=article.compiled) Read full article
     else if config.articles.json
       // each article in articles
       //   article

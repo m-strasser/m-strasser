@@ -1,7 +1,6 @@
 module.exports = function(grunt) {
   var config = grunt.file.readJSON('config.json');
   const fs = require('fs');
-  const path = require('path');
 
   var getMarkdownFiles = function(path) {
     var files = fs.readdirSync(path);
@@ -23,7 +22,10 @@ module.exports = function(grunt) {
 
     md_files.forEach(
       function(f) {
-        articles.push(fs.readFileSync(path + '/' + f));
+        articles.push({
+                compiled: 'articles/' + f.substring(0, f.indexOf('.')) + '.html',
+                content: fs.readFileSync(path + '/' + f)
+        });
       }
     );
 
