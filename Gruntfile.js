@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   var config = grunt.file.readJSON('config.json');
+  var single_articles_dest = 'articles/';
   const fs = require('fs');
 
   var getMarkdownFiles = function(path) {
@@ -23,7 +24,8 @@ module.exports = function(grunt) {
     md_files.forEach(
       function(f) {
         articles.push({
-                compiled: 'articles/' + f.substring(0, f.indexOf('.')) + '.html',
+          compiled: single_articles_dest
+                          + f.substring(0, f.indexOf('.')) + '.html',
                 content: fs.readFileSync(path + '/' + f)
         });
       }
@@ -114,7 +116,7 @@ module.exports = function(grunt) {
       markdown: {
         compile:{
           src: 'articles/',
-          dest: 'public/articles/'
+          dest: single_articles_dest
         }
       }
     });
