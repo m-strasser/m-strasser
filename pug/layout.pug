@@ -14,6 +14,10 @@ html(lang="en")
   body
     header
       nav
+        - var navigation = [{ url: 'somewhere.html', name: 'Somewhere' }]
+        each item in navigation
+                a(href=item.url) #{item.name}
+                span | 
         a(href="index.html") Home 
         span |
         a(href="projects.html")  Projects 

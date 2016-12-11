@@ -2,6 +2,9 @@
   "articles":
   {
     "json": false,
-    "markdown": true
-  }
+    "markdown": true,
+    "singles_dest": "articles/",
+    "src": "articles/"
+  },
+  "publicDir": "public/"
 }
